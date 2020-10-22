@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit {
 
     this.servi.login(this.usuario).subscribe( rest => {
         Swal.close(); // SE CIERRA EL MENSAJE
-        this.servi.guardarUsuario(rest.access_token);
-        this.servi.guardarToken(rest.access_token);
+        /* this.servi.guardarUsuario(rest.access_token);
+        this.servi.guardarToken(rest.access_token); */
         this.router.navigateByUrl('/home'); // NAVEGA HACIA EL HOME
       }, err => {
         Swal.close(); // SE CIERRA EL MENSAJE

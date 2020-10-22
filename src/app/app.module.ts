@@ -10,7 +10,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { CabezeraComponent } from './pages/cabezera/cabezera.component';
 import { CompanyComponent } from './pages/company/company.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -45,7 +44,7 @@ import { UsuarioComponent } from './pages/usuario/usuario.component';
     FormsModule,
     MaterialModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

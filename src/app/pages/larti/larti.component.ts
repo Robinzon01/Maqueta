@@ -1,15 +1,119 @@
 import { Component, OnInit } from '@angular/core';
+import { ArticuloService } from '../../_service/articulo.service';
+import { Usuario } from '../../_model/usuario';
+import { ActivatedRoute } from '@angular/router';
+
+import {Observable} from 'rxjs';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {map, startWith, flatMap} from 'rxjs/operators';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+// import { MatOption } from '@angular/material';
 
 @Component({
   selector: 'app-larti',
-  templateUrl: './larti.component.html',
-  styleUrls: ['./larti.component.css']
+  templateUrl: './larti.component.html'
 })
 export class LartiComponent implements OnInit {
+  articulos: Array<any> = [];
+  paginador: any;
 
-  constructor() { }
+  myControl = new FormControl();
+  filteredOptions: Observable<Array<any>>;
 
-  ngOnInit(): void {
+  formulario: FormGroup;
+
+  constructor(private serviArti: ArticuloService, private actiRouter: ActivatedRoute, private fb: FormBuilder) { 
+    this.crearFormulario();
   }
 
+  ngOnInit() {
+    this.actiRouter.paramMap.subscribe( params => {
+      let page: number = +params.get('page');
+      if (!page) { // SI NO EXISTE
+        page = 0;
+      }
+      let usu = new Usuario();
+     /*  usu = JSON.parse(sessionStorage.getItem('usuario')); */
+      usu.cia = '01';
+      usu.username = 'RSL';
+
+      this.serviArti.getPagArti(usu, page).subscribe( response => {
+         // console.log(response.content);
+         // console.warn(this.getPrecioArti('01', '101308'));
+          this.articulos = response.content;
+          this.paginador = response;
+        });
+      }
+    );
+    // BUSCAR ITEMS
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      // startWith(''),
+      map(value => typeof value === 'string' ? value : value.descripcion ),
+      flatMap(value => value ? this._filter(value) : [])
+    );
+  }
+  crearFormulario(): void {
+    this.formulario = this.fb.group({
+      item: ['CUA', Validators.required]
+    });
+  }
+  guardar(): void {
+    // console.log(this.formulario.get('item').value);
+    /* if (this.formulario.invalid) {
+      return;
+    } */
+    // console.log('=)2');
+    /*
+    this.actiRouter.paramMap.subscribe( params => {
+    let page: number = +params.get('page');
+    if (!page) { // SI NO EXISTE
+        page = 0;
+      }
+
+    let usu = new Usuario();
+    usu = JSON.parse(sessionStorage.getItem('usuario'));
+    this.serviArti.getPagArtiAndDesc(usu, 'COMUNICACIÓN' , page).subscribe( response => {
+          this.articulos = response.content;
+          this.paginador = response;
+        });
+    });
+    */
+  }
+  private _filter(value: string): Observable<Array<any>> {
+    const filterValue = value.toLowerCase();
+    // this.listaArtiDesc('01', value);
+    // return this.articulos.filter(option => option.descripcion.toLowerCase().indexOf(filterValue) === 0);
+    return this.serviArti.listaArtiDesc('01', value);
+  }
+
+  mostrarNombre(item?: any): string | undefined {
+    return item ? item.descripcion : undefined;
+  }
+
+  seleccionarItem(event: MatAutocompleteModule): void {
+    /*
+    const item = event.option.values ;
+  
+    this.actiRouter.paramMap.subscribe( params => {
+      let page: number = +params.get('page');
+      if (!page) { // SI NO EXISTE
+        page = 0;
+      }
+      let usu = new Usuario();
+      usu = JSON.parse(sessionStorage.getItem('usuario'));
+      this.serviArti.getPagArtiAndCodigo(usu, item.idArti.noArti , page).subscribe( response => {
+          this.articulos = response.content;
+          this.paginador = response;
+        });
+      }
+    );
+    */
+  }
+
+  // PRECIO DEL ARTICULO
+  /*
+  public getPrecioArti(cia: string, arti: string): string {
+    return this.serviArti.getPrecioArti(cia, arti).subscribe;
+  }
+  */
 }

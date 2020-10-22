@@ -1,4 +1,4 @@
-import { Injectable, ɵConsole } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from '../_model/usuario';
@@ -8,7 +8,7 @@ import { Usuario } from '../_model/usuario';
 })
 export class AuthService {
   private _usuario: Usuario;
-  private _token: string;
+  // private _token: string;
 
   constructor(private http: HttpClient) { }
   // METOD QUE NOS PERMITE OBTENER EL USUARIO
@@ -22,7 +22,7 @@ export class AuthService {
     return new Usuario();
   }
   // METODO QUE NOS PERMITE OBTENER EL TOKEN
-  public get token(): string {
+  /* public get token(): string {
     if (this._token != null) {
       return this._token;
     } else if (this._token == null && sessionStorage.getItem('token') != null) {
@@ -30,18 +30,20 @@ export class AuthService {
       return this._token;
     }
     return null;
-  }
+  } */
   // METODO QUE NOS PERMITE HACER EL LOGIN
   login(usuario: Usuario): Observable<any> {
     // const urlEndpoint = 'http://appcdsi.duckdns.org:8080/oauth/token';
    // const urlEndpoint = 'https://dd52e49b.ngrok.io/oauth/token';
     const urlEndpoint = 'http://localhost:8090/oauth/token';
 
-    const credenciales = btoa('cdsiapp' + ':' + 'r0bincdsi');
-
+    /* const credenciales = btoa('cdsiapp' + ':' + 'r0bincdsi');
     const httpHeaders = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': 'Basic ' + credenciales
+    }); */
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
     });
 
     let params = new URLSearchParams();
@@ -52,7 +54,7 @@ export class AuthService {
     return this.http.post<any>(urlEndpoint, params.toString(), { headers: httpHeaders });
   }
 
-  guardarUsuario(accessToken: string): void {
+/*   guardarUsuario(accessToken: string): void {
     let payload = this.obtenerDatosToken(accessToken);
     // console.log(payload);
     this._usuario = new Usuario();
@@ -64,27 +66,27 @@ export class AuthService {
     // console.warn(payload.authorities);
     this._usuario.roles = payload.authorities;
     sessionStorage.setItem('usuario', JSON.stringify(this._usuario));
-  }
+  } */
 
-  guardarToken(accessToken: string): void {
+  /* guardarToken(accessToken: string): void {
     this._token = accessToken;
     sessionStorage.setItem('token', accessToken);
-  }
+  } */
 
-  obtenerDatosToken(accessToken: string): any {
+ /*  obtenerDatosToken(accessToken: string): any {
     if (accessToken != null) {
       return JSON.parse(atob(accessToken.split(".")[1]));
     }
     return null;
-  }
+  } */
 
-  isAuthenticated(): boolean {
+  /* isAuthenticated(): boolean {
     let payload = this.obtenerDatosToken(this.token);
     if (payload != null && payload.user_name && payload.user_name.length > 0) {
       return true;
     }
     return false;
-  }
+  } */
 
   hasRole(role: string): boolean {
     if (this.usuario.roles.includes(role)) {
@@ -94,11 +96,11 @@ export class AuthService {
   }
 
   logout(): void {
-    this._token = null;
+    // this._token = null;
     this._usuario = null;
-    sessionStorage.clear();
+    /* sessionStorage.clear();
     sessionStorage.removeItem('token');
-    sessionStorage.removeItem('usuario');
+    sessionStorage.removeItem('usuario'); */
   }
 }
 

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { OtherService } from './other.service';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { Usuario } from '../models/usuario';
+import { Usuario } from '../_model/usuario';
 import Swal from 'sweetalert2'
 @Injectable({
   providedIn: 'root'

@@ -8,9 +8,8 @@ import { LartiComponent } from './pages/larti/larti.component';
 import { DartiComponent } from './pages/larti/darti/darti.component';
 import { LoginComponent } from './pages/login/login.component';
 
-
 const routes: Routes = [
-  { path: 'home'    , component: HomeComponent },
+  /* { path: 'home'    , component: HomeComponent }, */
   { path: 'registro', component: RegistroComponent },
   { path: 'company',  component: CompanyComponent },
   { path: 'usuario',  component: UsuarioComponent },
@@ -18,8 +17,10 @@ const routes: Routes = [
   { path: 'articulo/page/:page',  component: LartiComponent },
   { path: 'articulo/show/:cod', component: DartiComponent },
   { path: 'usuario/page/:page', component: UsuarioComponent },
-  { path: 'login'   , component: LoginComponent },
-  { path: '**', redirectTo: 'login' }
+  /* { path: 'login'   , component: LoginComponent },
+  { path: '**', redirectTo: 'login' } */
+  { path: 'home'   , component: HomeComponent },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({
