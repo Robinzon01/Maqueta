@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {map, startWith, flatMap} from 'rxjs/operators';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatTableDataSource } from '@angular/material/table';
 // import { MatOption } from '@angular/material';
 
 @Component({
@@ -14,6 +15,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   templateUrl: './larti.component.html'
 })
 export class LartiComponent implements OnInit {
+
+  dataSource: MatTableDataSource<any>;
   articulos: Array<any> = [];
   paginador: any;
 
@@ -38,10 +41,10 @@ export class LartiComponent implements OnInit {
       usu.username = 'RSL';
 
       this.serviArti.getPagArti(usu, page).subscribe( response => {
-         // console.log(response.content);
+         console.log(response.content);
          // console.warn(this.getPrecioArti('01', '101308'));
-          this.articulos = response.content;
-          this.paginador = response;
+         this.articulos = response.content;
+         this.paginador = response;
         });
       }
     );
